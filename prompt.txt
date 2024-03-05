@@ -54,13 +54,23 @@ Notes:
 
 
 ---
-This produces the following JSON.
+Extract the method as the markdown below.
+
+```
+1. Bring the water to a boil in a large saucepan. Add the penne, stir and cook following package directions to “al dente” stage (pasta still has a bite). Drain and set aside.
+1. While the pasta is cooking, heat the oil in a frying pan or skillet over medium low heat. When hot, add the garlic and fry gently until the flavour is released. Be careful not to brown the garlic.
+1. Add the Italian seasoning, parsley and crushed red peppers and mix to combine. Place the pasta in the saucepan on low heat and pour the garlic and spice mixture over the pasta. Toss gently to coat pasta and heat through.
+1. Place hot pasta in a serving bowl, mix the two cheeses together and sprinkle over the pasta.
+```
+
+This produces the following JSON. Ensure that the method you see above is what is there in the method filed in the JSON document.
 
 ```
 {
     "tags": ["Main Meals", "Pasta"],
     "nameEn": "Cheese and Garlic Penne",
-    "method": "Bring the water to a boil in a large saucepan. Add the penne, stir and cook following package directions to “al dente” stage (pasta still has a bite). Drain and set aside.\nWhile the pasta is cooking, heat the oil in a frying pan or skillet over medium low heat. When hot, add the garlic and fry gently until the flavour is released. Be careful not to brown the garlic.\nAdd the Italian seasoning, parsley and crushed red peppers and mix to combine. Place the pasta in the saucepan on low heat and pour the garlic and spice mixture over the pasta. Toss gently to coat pasta and heat through.\n Place hot pasta in a serving bowl, mix the two cheeses together and sprinkle over the pasta.\n\n Notes:\n 1 lb. of dry pasta will yield approximately 2 ¼ to 2 ½ lbs. of cooked pasta",
+    "method": "1. Bring the water to a boil in a large saucepan. Add the penne, stir and cook following package directions to “al dente” stage (pasta still has a bite). Drain and set aside.\n 1. While the pasta is cooking, heat the oil in a frying pan or skillet over medium low heat. When hot, add the garlic and fry gently until the flavour is released. Be careful not to brown the garlic.\n 1. Add the Italian seasoning, parsley and crushed red peppers and mix to combine. Place the pasta in the saucepan on low heat and pour the garlic and spice mixture over the pasta. Toss gently to coat pasta and heat through.\n 1. Place hot pasta in a serving bowl, mix the two cheeses together and sprinkle over the pasta.",
+    "tips": "1 lb. of dry pasta will yield approximately 2 ¼ to 2 ½ lbs. of cooked pasta",
     "portions": 6,
     "prepTime": 10,
     "cookTime": 20,
