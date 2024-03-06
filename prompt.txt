@@ -63,7 +63,9 @@ Extract the method as the markdown below.
 1. Place hot pasta in a serving bowl, mix the two cheeses together and sprinkle over the pasta.
 ```
 
-This produces the following JSON. Ensure that the method you see above is what is there in the method filed in the JSON document.
+This produces the following JSON. 
+Ensure that `nameEn` is not empty in the output.
+Ensure that the method you see above is what is there in the method filed in the JSON document.
 
 ```
 {

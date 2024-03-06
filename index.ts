@@ -8,12 +8,9 @@
 
 import OpenAI from "openai";
 import fs from "fs";
+import path from "path";
 
 const prompt = fs.readFileSync("prompt.txt");
-
-// const recipe = fs.readFileSync(0);
-const recipes = fs.readdirSync("recipes");
-console.log("recipes: ", recipes);
 
 const recipeToJSON = async (recipe) => {
   const openai = new OpenAI();
@@ -35,12 +32,22 @@ const recipeToJSON = async (recipe) => {
   }
 };
 
-for (let recipePath of recipes) {
-  const recipe = fs.readFileSync('recipes/' + recipePath);
+const recipesTxtDir = "recipes-txt";
+const recipesJSONDir = "recipes-json";
+
+const recipes = fs.readdirSync(recipesTxtDir);
+
+for (let recipeTxtPath of recipes) {
+  const recipeTextPath = path.join(recipesTxtDir, recipeTxtPath);
+  const recipe = fs.readFileSync(recipeTextPath);
   const jsonContent = await recipeToJSON(recipe);
   if (jsonContent) { 
-    fs.writeFileSync('recipes/'+recipePath+'.json', jsonContent);
+    const jsonRecipe = path.join(recipesJSONDir, path.basename(recipeTxtPath, ".txt") + '.json');
+    fs.writeFileSync(jsonRecipe, jsonContent);
+    const newPath = path.join('recipes-extracted', recipeTxtPath);
+    fs.renameSync(recipeTextPath, newPath);
   } else {
-    console.error('Error occured in ', recipePath);
+    console.error('Error occured in ', recipeTxtPath);
   }
+
 }
