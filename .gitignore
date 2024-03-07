@@ -8,3 +8,4 @@ recipes-extracted
 recipes-json
 recipes-imported
 .DS_Store
+product.csv
