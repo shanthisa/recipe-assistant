@@ -6,20 +6,20 @@ import path from "path";
 
 const productsDir = "search-results";
 
-const files = await fsPromises.readdir(productsDir);
+const files = (await fsPromises.readdir(productsDir)).filter(f => path.extname(f) === ".json");
 
 const extractQuantityAndUnit = (
   productName: string
 ): { quantity: number; unit: string } => {
   // Regular expression to match a pattern of number followed by a space and a unit
-  const regex = /(\d+)\s*(g|kg|oz|lb|L)/i; // Add more units as needed
+  const regex = /([\d\.]+)\s*(g|kg|oz|lb|L)/i; // Add more units as needed
 
   // Attempt to match the pattern within the productName string
   const matches = productName.match(regex);
 
   // If a match is found, return the quantity and unit
   if (matches && matches.length >= 3) {
-    const quantity = parseInt(matches[1], 10); // Convert the quantity to a number
+    const quantity = parseFloat(matches[1]); // Convert the quantity to a number
     const unit = matches[2]; // Extract the unit as is
     return { quantity, unit };
   }
@@ -37,6 +37,7 @@ for (const file of files) {
   const filePath = path.join(productsDir, file);
   // console.log(filePath);
   const data = fs.readFileSync(filePath);
+  console.log(filePath);
   const specificProducts = JSON.parse(data.toString());
   const qtyUnit = [];
   const noQtyUnit = [];
@@ -55,20 +56,20 @@ for (const file of files) {
   } else {
     const items = specificProducts.items;
     
+    //get all product items if they have the quantity 
+    // get the first product item if none of the items have a quantity
+    let qtyCount = 0;
     items.map((item, idx) => {
       const { quantity, unit } = extractQuantityAndUnit(item.name);
-      specificProducts.items[idx].quantity = quantity;
-      specificProducts.items[idx].unit = unit;
-      if (specificProducts.items[idx].quantity === 0) {
-        // console.log(
-        //   " no quantity and unit in " +
-        //     specificProducts.id +
-        //     " - " +
-        //     specificProducts.product_name_en
-        // );
-        noQtyUnit.push(specificProducts.items[idx]);
+      item.quantity = quantity;
+      item.unit = unit;
+      if (item.quantity !== 0) {
+        qtyUnit.push(item);
+        qtyCount++;
       } else {
-        qtyUnit.push(specificProducts.items[idx]);
+        if (qtyCount === 0 && idx == items.length-1) {
+          noQtyUnit.push(items[0]);
+        }
       }
     });
     if(noQtyUnit.length > 0) {
