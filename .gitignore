@@ -11,3 +11,6 @@ recipes-imported
 product.csv
 search-results
 failed-products.json
+product-qty-unit
+product-no-qty-unit
+products-no-items.json
