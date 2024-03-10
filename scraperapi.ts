@@ -27,8 +27,6 @@ const parseCSV = (): Promise<[CSVType]> => {
 
 let csvResults = await parseCSV();
 
-console.log(csvResults);
-
 const constructSearchURL = (product) => {
   const productQuery = product.split(" ").join("+");
   return `https://www.walmart.ca/en/search?q=${productQuery}`;
@@ -50,15 +48,22 @@ const failedProducts: [CSVType] = [];
 
 for (const product of csvResults) {
   try {
-    const searchResults = await runSearch(product.name_en);
-    searchResults.id = product.id;
-    searchResults.product_name_en = product.name_en;
-    let fileName = `${product.id} - ${product.name_en}`;
-    // write search result to file
-    await fspromise.writeFile(
-      `./search-results/${fileName}.json`,
-      JSON.stringify(searchResults, null, 2)
-    );
+    if (product.name_en.includes(' or ')) {
+      const firstProduct = product.name_en.split(' or ')[0];
+      const secondProduct = product.name_en.split(' or ')[1];
+      console.log('product: ', product);
+      console.log('firstProduct: ', firstProduct);
+      console.log('secondProduct: ', secondProduct);
+    }
+    // const searchResults = await runSearch(product.name_en);
+    // searchResults.id = product.id;
+    // searchResults.product_name_en = product.name_en;
+    // let fileName = `${product.id} - ${product.name_en}`;
+    // // write search result to file
+    // await fspromise.writeFile(
+    //   `./search-results/${fileName}.json`,
+    //   JSON.stringify(searchResults, null, 2)
+    // );
   } catch (e) {
     console.error("Error parsing JSON", e);
     failedProducts.push(product);

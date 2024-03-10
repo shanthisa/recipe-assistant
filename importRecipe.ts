@@ -67,47 +67,50 @@ const importRecipe = async (fileName) => {
     ]
   );
 
-  for (const ingredient of recipeContent.ingredients) {
-    let prodRec = await db.any("SELECT * FROM app.product where name_en=$1", [
-      ingredient.nameEn,
-    ]);
-    let measureRec;
-    let measureProd = prodRec[0];
-    if (prodRec.length === 0) {
-      let prodRecord = await db.one(
-        `INSERT INTO app.product(
-            name_en,
-            code,
-            price,
-            quantity,
-            unit
-        ) VALUES(
-            $1, $2, $3, $4, $5
-        ) RETURNING *`,
-        [ingredient.nameEn, "", 0, 0, ""]
-      );
-      measureProd = prodRecord;
-    }
+for (const ingredient of recipeContent.ingredients) {
+  
+}
+//   // for (const ingredient of recipeContent.ingredients) {
+//   //   let prodRec = await db.any("SELECT * FROM app.product where name_en=$1", [
+//   //     ingredient.nameEn,
+//   //   ]);
+//   //   let measureRec;
+//   //   let measureProd = prodRec[0];
+//   //   if (prodRec.length === 0) {
+//   //     let prodRecord = await db.one(
+//   //       `INSERT INTO app.product(
+//   //           name_en,
+//   //           code,
+//   //           price,
+//   //           quantity,
+//   //           unit
+//   //       ) VALUES(
+//   //           $1, $2, $3, $4, $5
+//   //       ) RETURNING *`,
+//   //       [ingredient.nameEn, "", 0, 0, ""]
+//   //     );
+//   //     measureProd = prodRecord;
+//   //   }
 
-    // If quantity is not a number (Number.isNaN(NaN) is true while NaN === NaN is false), then set the quantity to 0.
-    const quantity = Number.isNaN(parseInt(ingredient.quantity as string)) ? 0 : parseInt(ingredient.quantity as string);
-    // if ingredient.unit is undefined or set to 0 then unit is assumed as some. This is for salt and pepper.
-    const unit = quantity === 0 ? 'some' : (ingredient.unit || "some");
-    measureRec = await db.one(
-      `INSERT into app.measure(
-            product_id, 
-            meal_id, 
-            quantity,
-            unit
-            )
-            VALUES(
-                $1, $2, $3, $4
-            ) RETURNING *`,
-      [measureProd.id, rec.id, quantity, unit]
-    );
-    console.log("Ingredient:", measureProd.name_en);
-    console.log("quantity: ", measureRec.quantity);
-  }
+//     // If quantity is not a number (Number.isNaN(NaN) is true while NaN === NaN is false), then set the quantity to 0.
+//     const quantity = Number.isNaN(parseInt(ingredient.quantity as string)) ? 0 : parseInt(ingredient.quantity as string);
+//     // if ingredient.unit is undefined or set to 0 then unit is assumed as some. This is for salt and pepper.
+//     const unit = quantity === 0 ? 'some' : (ingredient.unit || "some");
+//     measureRec = await db.one(
+//       `INSERT into app.measure(
+//             product_id, 
+//             meal_id, 
+//             quantity,
+//             unit
+//             )
+//             VALUES(
+//                 $1, $2, $3, $4
+//             ) RETURNING *`,
+//       [measureProd.id, rec.id, quantity, unit]
+//     );
+//     console.log("Ingredient:", measureProd.name_en);
+//     console.log("quantity: ", measureRec.quantity);
+//   }
 };
 
 const recipePath = "recipes-json";

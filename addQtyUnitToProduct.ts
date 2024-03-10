@@ -12,7 +12,7 @@ const extractQuantityAndUnit = (
   productName: string
 ): { quantity: number; unit: string } => {
   // Regular expression to match a pattern of number followed by a space and a unit
-  const regex = /([\d\.]+)\s*(g|kg|oz|lb|L)/i; // Add more units as needed
+  const regex = /([\d\.\,]+)\s*(mg|g|kg|oz|lb|L|ml|each)/i; // Add more units as needed
 
   // Attempt to match the pattern within the productName string
   const matches = productName.match(regex);
