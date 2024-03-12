@@ -4,7 +4,7 @@ import fsPromises from "fs/promises";
 import fs from "fs";
 import path from "path";
 
-const productsDir = "search-results";
+const productsDir = "product-results";
 
 const files = (await fsPromises.readdir(productsDir)).filter(f => path.extname(f) === ".json");
 
@@ -12,6 +12,7 @@ const extractQuantityAndUnit = (
   productName: string
 ): { quantity: number; unit: string } => {
   // Regular expression to match a pattern of number followed by a space and a unit
+  
   const regex = /([\d\.\,]+)\s*(mg|g|kg|oz|lb|L|ml|each)/i; // Add more units as needed
 
   // Attempt to match the pattern within the productName string
@@ -28,9 +29,7 @@ const extractQuantityAndUnit = (
   return { quantity: 0, unit: "none" };
 };
 
-const noItems: [{ id: number; product_name_en: string }] = [];
-  
-
+const noItems: [{ keyword: string }] = [];
   
 for (const file of files) {
   // console.log(file);
@@ -47,8 +46,7 @@ for (const file of files) {
       specificProducts.id + " - " + specificProducts.product_name_en
     );
     noItems.push({
-      id: specificProducts.id,
-      product_name_en: specificProducts.product_name_en,
+      keyword: specificProducts.keyword
     });
     console.log('Array: ', noItems);
     console.log('String: ', noItems.toString());
@@ -60,6 +58,7 @@ for (const file of files) {
     // get the first product item if none of the items have a quantity
     let qtyCount = 0;
     items.map((item, idx) => {
+      item.product_keyword = specificProducts.keyword;
       const { quantity, unit } = extractQuantityAndUnit(item.name);
       item.quantity = quantity;
       item.unit = unit;
@@ -67,19 +66,20 @@ for (const file of files) {
         qtyUnit.push(item);
         qtyCount++;
       } else {
-        if (qtyCount === 0 && idx == items.length-1) {
-          noQtyUnit.push(items[0]);
-        }
+        noQtyUnit.push(item);
       }
+      const prodFileName = path.join('product-list', file);
+      fs.writeFileSync(prodFileName, JSON.stringify(item, null, 2));
     });
-    if(noQtyUnit.length > 0) {
-      const fName = path.join("product-no-qty-unit", file);
-      fs.writeFileSync(fName, JSON.stringify(noQtyUnit));
-    }
-    if(qtyUnit.length > 0) {
-      const fileName = path.join('product-qty-unit', file);
-      fs.writeFileSync(fileName, JSON.stringify(qtyUnit));
-    }
+    
+    // if(noQtyUnit.length > 0) {
+    //   const fName = path.join("product-no-qty-unit", file);
+    //   fs.writeFileSync(fName, JSON.stringify(noQtyUnit, null, 2));
+    // }
+    // if(qtyUnit.length > 0) {
+    //   const fileName = path.join('product-qty-unit', file);
+    //   fs.writeFileSync(fileName, JSON.stringify(qtyUnit, null, 2));
+    // }
   }
   // no items in  Balsamic Vinegar
   // no items in  Freshly Grated Ginger

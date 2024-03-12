@@ -10,6 +10,7 @@ import fspromise from "fs/promises";
 import fs from "fs";
 import csvParser from "csv-parser";
 
+
 type CSVType = { id: number; name_en: string };
 
 const parseCSV = (): Promise<[CSVType]> => {
@@ -45,8 +46,14 @@ const runSearch = async (product) => {
 };
 
 const failedProducts: [CSVType] = [];
+// extract distinct of product keywords from ingredients table.
+// this can be used for scraper api searches.
+const productKeywords = await db.any(`
+  SELECT DISTINCT product_keyword FROM app.ingredient
+`);
 
-for (const product of csvResults) {
+// for (const product of csvResults) {
+for (const product of productKeywords)
   try {
     if (product.name_en.includes(' or ')) {
       const firstProduct = product.name_en.split(' or ')[0];

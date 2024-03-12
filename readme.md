@@ -95,3 +95,39 @@ convert-txt -> parse-txt-to-json -> import meal
                                                                        -> Identify all the items based on upc
                                                                        -> extract unit and quantity with title
                                                                        -> upsert to product table and associate the product keyword
+
+const unitArr = [
+    bunch, 
+    can,
+    clove, cloves,
+    count,
+    cube,
+    cup, cups
+    dash,
+    drop, drops,
+    ea, EA, each,
+    fl oz, fl. oz, fl.oz,
+    head,
+    kg,
+    large, 
+    lb, lbs,
+    litre,
+    medium,
+    ml,
+    N/A, NaN or 2,
+    oz,
+    piece, pieces,
+    pinch
+    pkg,
+    portion,
+    recipe,
+    rib,
+    servings,
+    slice, slices
+    some,
+    splash,
+    tbsp
+    to, to taste
+    tsp,
+    unit
+  ]
